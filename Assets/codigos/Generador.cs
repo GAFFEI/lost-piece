@@ -15,10 +15,10 @@ public class Generador : MonoBehaviour
     //distintos tipos de objetos
     public List <GameObject> Tipo;
 
-    public float range_spawn_x = 5;
-    public float range_spawn_x2 = -5;
-    public float range_spawn_y = 5;
-    public float range_spawn_y2 = -5;
+    public float range_spawn_x = 3;
+    public float range_spawn_x2 = -3;
+    public float range_spawn_y = 3;
+    public float range_spawn_y2 = -3;
     public int nivel;
 
     public float ry;
@@ -34,7 +34,10 @@ public class Generador : MonoBehaviour
     void Update()
     {
 
-        
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Destruir();
+        }
 
 
     }
@@ -62,11 +65,15 @@ public class Generador : MonoBehaviour
 
     public void Destruir() 
     {
-        
+        for (int i = objetos.Count - 1; i >= 0; i--)
+        {
+            Destroy(objetos[i]);
+            objetos.RemoveAt(i);
+           
 
+            
 
-
-
+        }
 
     }
 
