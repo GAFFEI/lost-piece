@@ -17,8 +17,8 @@ public class Generador : MonoBehaviour
 
     public float range_spawn_x = 3;
     public float range_spawn_x2 = -3;
-    public float range_spawn_y = 3;
-    public float range_spawn_y2 = -3;
+    public float range_spawn_y = 2;
+    public float range_spawn_y2 = -2;
     public int nivel;
 
     public float ry;

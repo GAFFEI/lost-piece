@@ -9,10 +9,13 @@ public class Dragger : MonoBehaviour
 
     public bool dragging;
     public Vector2 offset;
+    SpriteRenderer spriteRenderer;
+    Rigidbody2D Rigidbody2D;
 
     void Start()
     {
-        
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        Rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
 
@@ -29,13 +32,14 @@ public class Dragger : MonoBehaviour
     void OnMouseDown()
     {
         dragging = true;
-
+        spriteRenderer.sortingOrder = 1;
         offset = GetMousePos() - (Vector2)transform.position;
     }
 
     private void OnMouseUp()
     {
         dragging = false;
+       
     }
 
 
@@ -44,5 +48,23 @@ public class Dragger : MonoBehaviour
     {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
+        
+        Rigidbody2D.AddForce(Vector2.left * 20);
+        
+        
+
+        Debug.Log("choque");
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Rigidbody2D.linearVelocity = Vector2.zero;
+    }
+
 
 }
