@@ -105,11 +105,10 @@ public class Generador : MonoBehaviour
         {
             Destroy(objetos[i]);
             objetos.RemoveAt(i);
-            Destroy(Casilla);
-
-
-
+           
         }
+
+        Destroy(Casilla);
 
     }
 
