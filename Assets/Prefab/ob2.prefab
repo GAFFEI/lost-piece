@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1326046346716759542}
   m_Layer: 6
   m_Name: ob2
-  m_TagString: Untagged
+  m_TagString: Objeto
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dragger
   dragging: 0
   offset: {x: 0, y: 0}
+  ID: 1
 --- !u!50 &1326046346716759542
 Rigidbody2D:
   serializedVersion: 5

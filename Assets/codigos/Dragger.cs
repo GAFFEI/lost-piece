@@ -8,9 +8,13 @@ public class Dragger : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public bool dragging;
+    public bool Win = false;
     public Vector2 offset;
     SpriteRenderer spriteRenderer;
     Rigidbody2D Rigidbody2D;
+
+    public int ID;
+    public int ID_CA = 100;
 
     void Start()
     {
@@ -26,6 +30,7 @@ public class Dragger : MonoBehaviour
        
         var mousepos = GetMousePos();
         transform.position = mousepos - offset;
+        ID_CA = GameObject.Find("Generador").GetComponent<Generador>().ID_Casilla;
 
     }
 
@@ -39,6 +44,10 @@ public class Dragger : MonoBehaviour
     private void OnMouseUp()
     {
         dragging = false;
+        if (Win)
+        {
+            Debug.Log("Ganaste");
+        }
        
     }
 
@@ -52,18 +61,27 @@ public class Dragger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-        
-        Rigidbody2D.AddForce(Vector2.left * 20);
-        
-        
+        if(collision.gameObject.tag == "Objeto")
+        {
+            Rigidbody2D.AddForce(Vector2.left * 20);
+            Debug.Log("choque");
+        }
 
-        Debug.Log("choque");
+        if (collision.gameObject.tag == "Casilla" && ID_CA == ID)
+        {
+            Win = true;
+            Debug.Log("Correcto");
+        }
+
+
+
+        
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         Rigidbody2D.linearVelocity = Vector2.zero;
+        Win = false;
     }
 
 

@@ -241,11 +241,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Generador
   objetos: []
-  time: []
+  time: 0
   num: 0
+  R: 0
+  RT: 0
+  ID_Casilla: 0
   Tipo:
   - {fileID: 8582429735112976784, guid: 6975c42aa7896cb4984e182bd4aae7b5, type: 3}
   - {fileID: 3768520296261584244, guid: 4ba2424130b235d41b9ca13ddbbe10ee, type: 3}
+  - {fileID: 1245577641562714623, guid: 35728e36fc92a0143b2b1b371298adde, type: 3}
+  Tipo_casilla:
+  - {fileID: 1016326728165711218, guid: 914e64cfa62b74c429c1473bca261407, type: 3}
+  - {fileID: 8031638479736039554, guid: 94f4b0d3845c00f439a2b205bbdf61e5, type: 3}
+  - {fileID: 3360773436977456996, guid: 0924cdb45f1d035409d23108b7a9cf86, type: 3}
+  Casilla: {fileID: 0}
   range_spawn_x: 5
   range_spawn_x2: -5
   range_spawn_y: 5
