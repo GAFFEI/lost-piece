@@ -53,7 +53,7 @@ public class Generador : MonoBehaviour
         
 
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 10; i++)
         {
 
 
@@ -64,29 +64,30 @@ public class Generador : MonoBehaviour
             if (i == 0) 
             {
                 
-                Casilla = Tipo_casilla[RT];
-                Instantiate(Casilla, new Vector3(2, 2, 0), Quaternion.identity);
+                Casilla = Instantiate(Tipo_casilla[RT], new Vector3(2, 2, 0), Quaternion.identity); ;
+               
                 ID_Casilla = RT;
             }
             else
             {
 
-                R = Random.Range(0, 2);
-                if (R == 0) 
+                
+                if (ID_Casilla == 0 && RT == ID_Casilla) 
                 {
-                    RT = Random.Range(0,ID_Casilla);
 
+                    RT = RT + 1;
 
                 }
-                else
+                else if(ID_Casilla == 2 && RT == ID_Casilla)
                 {
-                    RT = Random.Range(ID_Casilla + 1, 3);
+                    RT = RT - 1;
+                }
+                else if(ID_Casilla == RT)
+                {
+                    RT = RT - 1;
                 }
 
-                if(ID_Casilla == 0)
-                {
-                    RT = Random.Range(1, 3);
-                }
+                
 
             }
 

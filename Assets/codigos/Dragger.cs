@@ -11,15 +11,19 @@ public class Dragger : MonoBehaviour
     public bool Win = false;
     public Vector2 offset;
     SpriteRenderer spriteRenderer;
-    Rigidbody2D Rigidbody2D;
+    Rigidbody2D rigidbody2D;
 
     public int ID;
     public int ID_CA = 100;
 
+    private void Awake()
+    {
+        rigidbody2D = GetComponent<Rigidbody2D>();
+    }
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        Rigidbody2D = GetComponent<Rigidbody2D>();
+        
     }
 
 
@@ -63,8 +67,14 @@ public class Dragger : MonoBehaviour
     {
         if(collision.gameObject.tag == "Objeto")
         {
-            Rigidbody2D.AddForce(Vector2.left * 20);
-            Debug.Log("choque");
+            if (collision.gameObject.GetComponent<Rigidbody2D>() != null)
+            {
+                rigidbody2D.AddForce(Vector2.left * 20);
+                Debug.Log("choque");
+
+            }
+
+           
         }
 
         if (collision.gameObject.tag == "Casilla" && ID_CA == ID)
@@ -80,7 +90,7 @@ public class Dragger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Rigidbody2D.linearVelocity = Vector2.zero;
+        rigidbody2D.linearVelocity = Vector2.zero;
         Win = false;
     }
 
