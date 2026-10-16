@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Objeto
   - Casilla
+  - direction
   layers:
   - Default
   - TransparentFX

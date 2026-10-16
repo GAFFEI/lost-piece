@@ -7,14 +7,20 @@ public class Dragger : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public bool dragging;
+    public bool dragging = false;
     public bool Win = false;
+    public bool impacts = false;
     public Vector2 offset;
     SpriteRenderer spriteRenderer;
     Rigidbody2D rigidbody2D;
 
     public int ID;
     public int ID_CA = 100;
+
+    public Phisics_obj up;
+    public Phisics_obj down;
+    public Phisics_obj left;
+    public Phisics_obj right;
 
     private void Awake()
     {
@@ -66,14 +72,42 @@ public class Dragger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Objeto")
+
+        if(collision.gameObject.tag == "Objeto" && dragging)
         {
-            if (collision.gameObject.GetComponent<Rigidbody2D>() != null)
+
+            Dragger dra = collision.GetComponent<Dragger>();
+            dra.impacts = true;
+        }
+
+        if(collision.gameObject.tag == "direction" && impacts)
+        {
+            if(collision.GetComponent<Phisics_obj>() != null)
             {
-                rigidbody2D.AddForce(Vector2.left * 20);
-                Debug.Log("choque");
+                Phisics_obj obj = collision.GetComponent<Phisics_obj>();
+                if(obj.direction == Vector2.up)
+                {
+                    rigidbody2D.AddForce(Vector2.down * 20);
+                    
+                }
+                else if(obj.direction == Vector2.down)
+                {
+                    rigidbody2D.AddForce(Vector2.up * 20);
+                }
+                
+                if (obj.direction == Vector2.left)
+                {
+                    rigidbody2D.AddForce(Vector2.right * 20);
+                }
+                else if(obj.direction == Vector2.right)
+                {
+                    rigidbody2D.AddForce(Vector2.left * 20);
+                }
 
             }
+                
+
+            
 
            
         }
@@ -94,6 +128,7 @@ public class Dragger : MonoBehaviour
     {
         rigidbody2D.linearVelocity = Vector2.zero;
         Win = false;
+        impacts = false;
     }
 
 

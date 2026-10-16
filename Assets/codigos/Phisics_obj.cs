@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public class ID_OBJ3 : MonoBehaviour
+public class Phisics_obj : MonoBehaviour
 {
+    public Vector2 direction;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+
     void Start()
     {
         
@@ -12,5 +15,10 @@ public class ID_OBJ3 : MonoBehaviour
     void Update()
     {
         
+
+
+
+
+
     }
 }
