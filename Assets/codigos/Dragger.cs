@@ -51,6 +51,7 @@ public class Dragger : MonoBehaviour
         if (Win)
         {
             Debug.Log("Ganaste");
+            GameObject.Find("Generador").GetComponent<Generador>().ganar_nivel = true;
         }
        
     }
@@ -81,6 +82,7 @@ public class Dragger : MonoBehaviour
         {
             Win = true;
             Debug.Log("Correcto");
+            
         }
 
 

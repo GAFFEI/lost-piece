@@ -21,6 +21,8 @@ public class Generador : MonoBehaviour
 
     public GameObject Casilla;
 
+    public bool ganar_nivel = false;
+
     public float range_spawn_x = 3;
     public float range_spawn_x2 = -3;
     public float range_spawn_y = 2;
@@ -34,6 +36,7 @@ public class Generador : MonoBehaviour
     void Start()
     {
         GenerarObjetos();
+        nivel = 0;
     }
 
     // Update is called once per frame
@@ -45,6 +48,13 @@ public class Generador : MonoBehaviour
             Destruir();
         }
 
+        if (ganar_nivel)
+        {
+            Destruir();
+            GenerarObjetos();
+            nivel = nivel + 2;
+            ganar_nivel=false;
+        }
 
     }
 
@@ -53,7 +63,7 @@ public class Generador : MonoBehaviour
         
 
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 10 + nivel; i++)
         {
 
 
