@@ -10,6 +10,8 @@ public class Generador : MonoBehaviour
     //los que aparecen
     public List <GameObject> objetos;
 
+    [SerializeField] private Timebar T;
+
     public TextMeshProUGUI texto;
     public float time;
 
@@ -55,10 +57,19 @@ public class Generador : MonoBehaviour
 
         if (ganar_nivel)
         {
-            puntaje = (int)(puntaje + Timebar.getTime());
+            if(T != null)
+            {
+                puntaje = (int)(puntaje + T.tiempo);
+                T.restart = true;
+            }
+
+
+            
             texto.text = "Puntaje:" + puntaje.ToString();
             Destruir();
             GenerarObjetos();
+            
+
             nivel = nivel + 2;
             ganar_nivel=false;
         }

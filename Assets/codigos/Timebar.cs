@@ -8,10 +8,10 @@ public class Timebar : MonoBehaviour
 {
 
     public UnityEngine.UI.Image relleno;
-    float maxtime;
-    public static float tiempo;
+    public float maxtime;
+    public float tiempo;
 
-    public int Num;
+    public bool restart = false;
 
 
 
@@ -29,17 +29,23 @@ public class Timebar : MonoBehaviour
 
         relleno.fillAmount = tiempo / maxtime;
 
+        if (restart)
+        {
+            restore();
+            restart = false;
+        }
 
     }
 
-    public static float getTime()
+  
+    public void restore()
     {
-        return tiempo;
-    }
 
-    public void restore(int Num)
-    {
-        maxtime = maxtime - Num;
+        if(maxtime > 50)
+        {
+            maxtime = maxtime - 1;
+        }
+        
 
         tiempo = maxtime;
     }
