@@ -1,14 +1,16 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
+using UnityEngine.TextCore.Text;
 
 public class Generador : MonoBehaviour
 {
 
     //los que aparecen
     public List <GameObject> objetos;
-    
 
+    public TextMeshProUGUI texto;
     public float time;
 
     public int num = 0;
@@ -29,6 +31,8 @@ public class Generador : MonoBehaviour
     public float range_spawn_y2 = -2;
     public int nivel;
 
+    public int puntaje = 0;
+
     public float ry;
     public float rx;
 
@@ -37,6 +41,7 @@ public class Generador : MonoBehaviour
     {
         GenerarObjetos();
         nivel = 0;
+        texto = GameObject.Find("Score").GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -50,6 +55,8 @@ public class Generador : MonoBehaviour
 
         if (ganar_nivel)
         {
+            puntaje = (int)(puntaje + Timebar.getTime());
+            texto.text = "Puntaje:" + puntaje.ToString();
             Destruir();
             GenerarObjetos();
             nivel = nivel + 2;
