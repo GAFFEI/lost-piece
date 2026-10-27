@@ -74,6 +74,13 @@ public class Generador : MonoBehaviour
             ganar_nivel=false;
         }
 
+        if (T.End)
+        {
+            Destruir();
+        }
+
+
+
     }
 
     public void GenerarObjetos()

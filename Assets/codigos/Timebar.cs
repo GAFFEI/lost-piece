@@ -12,6 +12,7 @@ public class Timebar : MonoBehaviour
     public float tiempo;
 
     public bool restart = false;
+    public bool End = false;
 
 
 
@@ -33,6 +34,11 @@ public class Timebar : MonoBehaviour
         {
             restore();
             restart = false;
+        }
+
+        if(tiempo <= 0)
+        {
+            End = true;
         }
 
     }

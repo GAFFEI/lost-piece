@@ -1,6 +1,7 @@
-using System.Net.NetworkInformation;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class Dragger : MonoBehaviour
@@ -41,6 +42,40 @@ public class Dragger : MonoBehaviour
         var mousepos = GetMousePos();
         transform.position = mousepos - offset;
         ID_CA = GameObject.Find("Generador").GetComponent<Generador>().ID_Casilla;
+
+
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(
+                Input.mousePosition
+            );
+
+            Collider2D[] hits = Physics2D.OverlapPointAll(mousePos);
+
+            if (hits.Length > 0)
+            {
+                Collider2D topObject = hits
+                    .OrderByDescending(hit =>
+                    {
+                        SpriteRenderer sr =
+                            hit.GetComponent<SpriteRenderer>();
+
+                        if (sr == null)
+                            sr = hit.GetComponentInParent<SpriteRenderer>();
+
+                        return sr != null ? sr.sortingOrder : 0;
+                    })
+                    .First();
+
+                Debug.Log("Objeto seleccionado: " +
+                          topObject.gameObject.name);
+            }
+        }
+
+
+
+
 
     }
 
