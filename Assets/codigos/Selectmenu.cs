@@ -30,7 +30,11 @@ public class Selectmenu : MonoBehaviour
         TH4 = GameObject.Find("HighScore4").GetComponent<TextMeshProUGUI>();
         TH5 = GameObject.Find("HighScore5").GetComponent<TextMeshProUGUI>();
         change = true;
-
+        TH1.text = "1:" + End_result.HS1 + " " + End_result.HSN1;
+        TH2.text = "2:" + End_result.HS2 + " " + End_result.HSN2;
+        TH3.text = "3:" + End_result.HS3 + " " + End_result.HSN3;
+        TH4.text = "4:" + End_result.HS4 + " " + End_result.HSN4;
+        TH5.text = "5:" + End_result.HS5 + " " + End_result.HSN5;
     }
 
     // Update is called once per frame

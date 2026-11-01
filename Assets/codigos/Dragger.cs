@@ -23,6 +23,8 @@ public class Dragger : MonoBehaviour
     public Phisics_obj left;
     public Phisics_obj right;
 
+    
+
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();

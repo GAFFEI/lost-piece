@@ -38,6 +38,8 @@ public class Generador : MonoBehaviour
     public float ry;
     public float rx;
 
+    public static int EScore;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -76,7 +78,10 @@ public class Generador : MonoBehaviour
 
         if (T.End)
         {
+            EScore = puntaje;
+
             Destruir();
+            SceneManager.LoadScene("GameEnd");
         }
 
 
