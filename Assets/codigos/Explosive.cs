@@ -1,0 +1,209 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.NetworkInformation;
+using UnityEditor;
+using UnityEngine;
+
+public class Explosive : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    //check para ver si objeto se encuentra activo
+    public bool active = false;
+    //check adicional para asegurar que no hayan temporizadores infinitos
+    public bool isTimerRunning = false;
+    public GameObject explosion;
+
+    public bool dragging = false;
+    public bool Win = false;
+    public bool impacts = false;
+    public Vector2 offset;
+    SpriteRenderer spriteRenderer;
+    Rigidbody2D rigidbody2D;
+
+    public int ID;
+    public int ID_CA = 100;
+
+    public Phisics_obj up;
+    public Phisics_obj down;
+    public Phisics_obj left;
+    public Phisics_obj right;
+
+    
+
+    private void Awake()
+    {
+        rigidbody2D = GetComponent<Rigidbody2D>();
+    }
+    void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        
+    }
+
+    //codigo explosion
+    public void Explode()
+    {
+        Instantiate(explosion, transform.position, Quaternion.identity);
+
+        Destroy(gameObject);
+    }
+
+    //codigo para termporizador para explosion
+    IEnumerator Timer()
+    {
+        yield return new WaitForSeconds(1f);
+
+        Debug.Log("temporizador termino ");
+
+        Explode();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //codigo para activacion de temporizador
+        if (active && !(isTimerRunning)) {
+            Debug.Log("Objeto activado: " );
+
+
+            isTimerRunning = true;
+            StartCoroutine(Timer());
+
+        }
+
+        if (!dragging) return; 
+       
+        var mousepos = GetMousePos();
+        transform.position = mousepos - offset;
+        ID_CA = GameObject.Find("Generador").GetComponent<Generador>().ID_Casilla;
+
+
+
+        if (Input.GetMouseButtonDown(0))
+        {
+
+
+
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(
+                Input.mousePosition
+            );
+
+            Collider2D[] hits = Physics2D.OverlapPointAll(mousePos);
+
+            if (hits.Length > 0)
+            {
+                Collider2D topObject = hits
+                    .OrderByDescending(hit =>
+                    {
+                        SpriteRenderer sr =
+                            hit.GetComponent<SpriteRenderer>();
+
+                        if (sr == null)
+                            sr = hit.GetComponentInParent<SpriteRenderer>();
+
+                        return sr != null ? sr.sortingOrder : 0;
+                    })
+                    .First();
+
+                Debug.Log("Objeto seleccionado: " +
+                          topObject.gameObject.name);
+            }
+        }
+
+
+
+    }
+
+    void OnMouseDown()
+    {
+        //activation of item, also have to add this one life for when an explosion touches an explosive
+        active = true;
+
+
+        dragging = true;
+        spriteRenderer.sortingOrder = 1;
+        offset = GetMousePos() - (Vector2)transform.position;
+    }
+
+    private void OnMouseUp()
+    {
+        dragging = false;
+        if (Win)
+        {
+            Debug.Log("Ganaste");
+            GameObject.Find("Generador").GetComponent<Generador>().ganar_nivel = true;
+        }
+       
+    }
+
+
+
+    Vector2 GetMousePos()
+    {
+        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if(collision.gameObject.tag == "Objeto" && dragging)
+        {
+
+            Dragger dra = collision.GetComponent<Dragger>();
+            dra.impacts = true;
+        }
+
+        if(collision.gameObject.tag == "direction" && impacts)
+        {
+            if(collision.GetComponent<Phisics_obj>() != null)
+            {
+                Phisics_obj obj = collision.GetComponent<Phisics_obj>();
+                if(obj.direction == Vector2.up)
+                {
+                    rigidbody2D.AddForce(Vector2.down * 20);
+                    
+                }
+                else if(obj.direction == Vector2.down)
+                {
+                    rigidbody2D.AddForce(Vector2.up * 20);
+                }
+                
+                if (obj.direction == Vector2.left)
+                {
+                    rigidbody2D.AddForce(Vector2.right * 20);
+                }
+                else if(obj.direction == Vector2.right)
+                {
+                    rigidbody2D.AddForce(Vector2.left * 20);
+                }
+
+            }
+                
+
+            
+
+           
+        }
+
+
+        
+        if (collision.gameObject.tag == "Explosion")
+        {
+            Debug.Log("colision con epxlosion");
+            active = true;
+        }
+        
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        rigidbody2D.linearVelocity = Vector2.zero;
+        Win = false;
+        impacts = false;
+    }
+
+
+}
