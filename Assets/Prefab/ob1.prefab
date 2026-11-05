@@ -623,6 +623,11 @@ MonoBehaviour:
   down: {fileID: 1019753404183194768}
   left: {fileID: 750903885138122799}
   right: {fileID: 8139564642026173581}
+  aud2: {fileID: 7988015631333941282}
+  col: {fileID: 8300000, guid: 6c68f4ab988804c4fbe6020276117b36, type: 3}
+  pickup: {fileID: 8300000, guid: fad5da98af0c3d74ba731b37dd97ca16, type: 3}
+  drop: {fileID: 8300000, guid: 55737e4b7f4af6e45afc67909c538991, type: 3}
+  SC: 0
 --- !u!50 &6443901800360052961
 Rigidbody2D:
   serializedVersion: 5
@@ -662,7 +667,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

@@ -23,7 +23,12 @@ public class Dragger : MonoBehaviour
     public Phisics_obj left;
     public Phisics_obj right;
 
-    
+    public AudioSource aud2;
+    public AudioClip col;
+    public AudioClip pickup;
+    public AudioClip drop;
+    public bool SC = false;
+
 
     private void Awake()
     {
@@ -83,6 +88,10 @@ public class Dragger : MonoBehaviour
 
     void OnMouseDown()
     {
+        if(dragging == false)
+        {
+            aud2.PlayOneShot(pickup);
+        }
         dragging = true;
         spriteRenderer.sortingOrder = 1;
         offset = GetMousePos() - (Vector2)transform.position;
@@ -90,6 +99,11 @@ public class Dragger : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (dragging && Win == false)
+        {
+            aud2.PlayOneShot(drop);
+        }
+
         dragging = false;
         if (Win)
         {
@@ -141,6 +155,12 @@ public class Dragger : MonoBehaviour
                     rigidbody2D.AddForce(Vector2.left * 20);
                 }
 
+                if(SC == false)
+                {
+                    aud2.PlayOneShot(col);
+                    SC = true;
+                }
+
             }
                 
 
@@ -166,6 +186,7 @@ public class Dragger : MonoBehaviour
         rigidbody2D.linearVelocity = Vector2.zero;
         Win = false;
         impacts = false;
+        SC = false;
     }
 
 
