@@ -13,6 +13,9 @@ public class Generador : MonoBehaviour
     [SerializeField] private Timebar T;
 
     public TextMeshProUGUI texto;
+
+    public AudioSource aud;
+    public AudioClip Fit;
     public float time;
 
     public int num = 0;
@@ -65,7 +68,7 @@ public class Generador : MonoBehaviour
                 T.restart = true;
             }
 
-
+            aud.PlayOneShot(Fit);
             
             texto.text = "Puntaje:" + puntaje.ToString();
             Destruir();

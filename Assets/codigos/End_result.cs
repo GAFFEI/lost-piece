@@ -39,7 +39,7 @@ public class End_result : MonoBehaviour
     void Update()
     {
 
-        if (Name.text != null && Input.GetKeyDown(KeyCode.Return))
+        if (Name.text.Length == 4 && Input.GetKeyDown(KeyCode.Return))
         {
             if(Received >= HS1)
             {
