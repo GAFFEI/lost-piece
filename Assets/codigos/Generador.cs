@@ -125,7 +125,7 @@ public class Generador : MonoBehaviour
 
             ry = Random.Range(range_spawn_y2, range_spawn_y);
             rx = Random.Range(range_spawn_x2, range_spawn_x);
-            RT = Random.Range(0, 10);
+            RT = Random.Range(0, 20);
 
             if (i == 0) 
             {
