@@ -162,11 +162,11 @@ public class Dragger : MonoBehaviour
                 }
 
             }
-                
 
             
 
-           
+
+
         }
 
         if (collision.gameObject.tag == "Casilla" && ID_CA == ID)
@@ -176,9 +176,30 @@ public class Dragger : MonoBehaviour
             
         }
 
+        if (collision.gameObject.tag == "WD")
+        {
+            rigidbody2D.AddForce(Vector2.left * 150);
 
+        }
 
-        
+        if (collision.gameObject.tag == "WI")
+        {
+            rigidbody2D.AddForce(Vector2.right * 150);
+
+        }
+
+        if (collision.gameObject.tag == "WU")
+        {
+            rigidbody2D.AddForce(Vector2.down * 150);
+
+        }
+
+        if (collision.gameObject.tag == "WB")
+        {
+            rigidbody2D.AddForce(Vector2.up * 150);
+
+        }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)

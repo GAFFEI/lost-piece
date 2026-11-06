@@ -9,6 +9,10 @@ TagManager:
   - direction
   - Explosivo
   - Explosion
+  - WD
+  - WI
+  - WU
+  - WB
   layers:
   - Default
   - TransparentFX
