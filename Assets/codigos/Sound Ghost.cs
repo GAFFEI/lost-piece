@@ -20,7 +20,7 @@ public class AudioGhost : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
 
-        audioSource.PlayOneShot(sound);
+        audioSource.PlayOneShot(sound, 0.3f);
 
         Destroy(gameObject, sound.length);
 

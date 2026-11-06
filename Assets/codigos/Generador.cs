@@ -72,7 +72,7 @@ public class Generador : MonoBehaviour
                 T.restart = true;
             }
 
-            aud.PlayOneShot(Fit);
+            aud.PlayOneShot(Fit, 0.3f);
             
             texto.text = "Puntaje:" + puntaje.ToString();
             Destruir();

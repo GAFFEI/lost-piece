@@ -90,7 +90,7 @@ public class Dragger : MonoBehaviour
     {
         if(dragging == false)
         {
-            aud2.PlayOneShot(pickup);
+            aud2.PlayOneShot(pickup, 0.3f);
         }
         dragging = true;
         spriteRenderer.sortingOrder = 1;
@@ -101,7 +101,7 @@ public class Dragger : MonoBehaviour
     {
         if (dragging && Win == false)
         {
-            aud2.PlayOneShot(drop, 0.5f);
+            aud2.PlayOneShot(drop, 0.05f);
         }
 
         dragging = false;
