@@ -14,6 +14,10 @@ public class Explosive : MonoBehaviour
     //check adicional para asegurar que no hayan temporizadores infinitos
     public bool isTimerRunning = false;
     public GameObject explosion;
+    public GameObject explosionAudio;
+
+    private ScreenShake screenShake;
+
 
     public bool dragging = false;
     public bool Win = false;
@@ -45,7 +49,11 @@ public class Explosive : MonoBehaviour
     //codigo explosion
     public void Explode()
     {
+        screenShake = Camera.main.GetComponent<ScreenShake>();
+        StartCoroutine(screenShake.Shake(0.5f, 0.5f));
+
         Instantiate(explosion, transform.position, Quaternion.identity);
+        Instantiate(explosionAudio, transform.position, Quaternion.identity);
 
         Destroy(gameObject);
     }
@@ -55,7 +63,6 @@ public class Explosive : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        Debug.Log("temporizador termino ");
 
         Explode();
     }
@@ -189,12 +196,6 @@ public class Explosive : MonoBehaviour
         }
 
 
-        
-        if (collision.gameObject.tag == "Explosion")
-        {
-            Debug.Log("colision con epxlosion");
-            active = true;
-        }
         
     }
 

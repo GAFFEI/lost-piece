@@ -26,6 +26,9 @@ public class Generador : MonoBehaviour
     public List <GameObject> Tipo;
     public List<GameObject> Tipo_casilla;
 
+    public List<GameObject> Bombas;
+
+
     public GameObject Casilla;
 
     public bool ganar_nivel = false;
@@ -47,6 +50,7 @@ public class Generador : MonoBehaviour
     void Start()
     {
         GenerarObjetos();
+        
         nivel = 0;
         texto = GameObject.Find("Score").GetComponent<TextMeshProUGUI>();
     }
@@ -91,6 +95,25 @@ public class Generador : MonoBehaviour
 
     }
 
+    public void GenerarExplosivos()
+    {
+        if ((nivel > 10) || true)
+        {
+            for (int i = 0; (i <= (nivel / 10) )|| (i < 2); i++)
+            {
+                ry = Random.Range(range_spawn_y2, range_spawn_y);
+                rx = Random.Range(range_spawn_x2, range_spawn_x);
+                RT = Random.Range(0, 2);
+
+
+                GameObject objeto = Instantiate(Bombas[RT], new Vector3(rx, ry, 0), Quaternion.identity);
+                
+                
+                objetos.Add(objeto);
+            }
+        }
+    }
+
     public void GenerarObjetos()
     {
         
@@ -102,7 +125,7 @@ public class Generador : MonoBehaviour
 
             ry = Random.Range(range_spawn_y2, range_spawn_y);
             rx = Random.Range(range_spawn_x2, range_spawn_x);
-            RT = Random.Range(0, 3);
+            RT = Random.Range(0, 10);
 
             if (i == 0) 
             {
@@ -139,6 +162,7 @@ public class Generador : MonoBehaviour
             objetos.Add(objeto);
         }
 
+        GenerarExplosivos();
 
     }
 
@@ -147,8 +171,11 @@ public class Generador : MonoBehaviour
     {
         for (int i = objetos.Count - 1; i >= 0; i--)
         {
-            Destroy(objetos[i]);
-            objetos.RemoveAt(i);
+            if(objetos[i] != null)
+            {
+                Destroy(objetos[i]);
+                objetos.RemoveAt(i);
+            }
            
         }
 
