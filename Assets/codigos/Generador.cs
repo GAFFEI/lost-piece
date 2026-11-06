@@ -130,7 +130,7 @@ public class Generador : MonoBehaviour
             if (i == 0) 
             {
                 
-                Casilla = Instantiate(Tipo_casilla[RT], new Vector3(2, 2, 0), Quaternion.identity); ;
+                Casilla = Instantiate(Tipo_casilla[RT], new Vector3(0, -4, 0), Quaternion.identity); ;
                
                 ID_Casilla = RT;
             }
