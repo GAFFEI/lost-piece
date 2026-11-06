@@ -49,9 +49,10 @@ public class Explosive : MonoBehaviour
     //codigo explosion
     public void Explode()
     {
+        /*
         screenShake = Camera.main.GetComponent<ScreenShake>();
         StartCoroutine(screenShake.Shake(0.5f, 0.5f));
-
+        */
         Instantiate(explosion, transform.position, Quaternion.identity);
         Instantiate(explosionAudio, transform.position, Quaternion.identity);
 

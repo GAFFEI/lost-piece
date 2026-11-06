@@ -101,7 +101,7 @@ public class Dragger : MonoBehaviour
     {
         if (dragging && Win == false)
         {
-            aud2.PlayOneShot(drop);
+            aud2.PlayOneShot(drop, 0.5f);
         }
 
         dragging = false;
@@ -157,7 +157,7 @@ public class Dragger : MonoBehaviour
 
                 if(SC == false)
                 {
-                    aud2.PlayOneShot(col);
+                    aud2.PlayOneShot(col, 0.05f);
                     SC = true;
                 }
 
