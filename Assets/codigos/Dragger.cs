@@ -29,6 +29,7 @@ public class Dragger : MonoBehaviour
     public AudioClip drop;
     public bool SC = false;
 
+    private Generador generador;
 
     private void Awake()
     {
@@ -37,7 +38,12 @@ public class Dragger : MonoBehaviour
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        
+        generador = FindFirstObjectByType<Generador>();
+        if (generador != null)
+        {
+            ID_CA = generador.ID_Casilla;
+        }
+
     }
 
 
@@ -48,56 +54,26 @@ public class Dragger : MonoBehaviour
        
         var mousepos = GetMousePos();
         transform.position = mousepos - offset;
-        ID_CA = GameObject.Find("Generador").GetComponent<Generador>().ID_Casilla;
 
 
-
-        if (Input.GetMouseButtonDown(0))
+        if (generador != null)
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(
-                Input.mousePosition
-            );
-
-            Collider2D[] hits = Physics2D.OverlapPointAll(mousePos);
-
-            if (hits.Length > 0)
-            {
-                Collider2D topObject = hits
-                    .OrderByDescending(hit =>
-                    {
-                        SpriteRenderer sr =
-                            hit.GetComponent<SpriteRenderer>();
-
-                        if (sr == null)
-                            sr = hit.GetComponentInParent<SpriteRenderer>();
-
-                        return sr != null ? sr.sortingOrder : 0;
-                    })
-                    .First();
-
-                Debug.Log("Objeto seleccionado: " +
-                          topObject.gameObject.name);
-            }
+            ID_CA = generador.ID_Casilla;
         }
-
-
-
-
 
     }
 
-    void OnMouseDown()
+    public void Agarrar()
     {
         if(dragging == false)
         {
             aud2.PlayOneShot(pickup, 0.3f);
         }
         dragging = true;
-        spriteRenderer.sortingOrder = 1;
         offset = GetMousePos() - (Vector2)transform.position;
     }
 
-    private void OnMouseUp()
+    public void Soltar()
     {
         if (dragging && Win == false)
         {
@@ -108,9 +84,13 @@ public class Dragger : MonoBehaviour
         if (Win)
         {
             Debug.Log("Ganaste");
-            GameObject.Find("Generador").GetComponent<Generador>().ganar_nivel = true;
+            if (generador != null)
+            {
+                generador.ganar_nivel = true;
+            }
+
         }
-       
+
     }
 
 

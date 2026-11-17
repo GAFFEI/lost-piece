@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8640255576773435056}
   - component: {fileID: 3950753553783717467}
   - component: {fileID: 9044194716899542615}
-  - component: {fileID: 7884636361186838397}
   m_Layer: 0
   m_Name: E 1 Bomba
   m_TagString: Explosivo
@@ -198,33 +197,6 @@ MonoBehaviour:
   down: {fileID: 0}
   left: {fileID: 0}
   right: {fileID: 0}
---- !u!114 &7884636361186838397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1245577641562714623}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55867ca4bd5a2a54cabd1cf4e8cab1e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Dragger
-  dragging: 0
-  Win: 0
-  impacts: 0
-  offset: {x: 0, y: 0}
-  ID: 100
-  ID_CA: 100
-  up: {fileID: 8037147585871771491}
-  down: {fileID: 1060940428809383989}
-  left: {fileID: 4253587981748706085}
-  right: {fileID: 1068171316677489507}
-  aud2: {fileID: 0}
-  col: {fileID: 0}
-  pickup: {fileID: 0}
-  drop: {fileID: 0}
-  SC: 0
 --- !u!1 &3675277769366381242
 GameObject:
   m_ObjectHideFlags: 0

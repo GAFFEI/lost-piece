@@ -34,7 +34,8 @@ public class Explosive : MonoBehaviour
     public Phisics_obj left;
     public Phisics_obj right;
 
-    
+    private Generador generador;
+
 
     private void Awake()
     {
@@ -43,7 +44,12 @@ public class Explosive : MonoBehaviour
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        
+        generador = FindFirstObjectByType<Generador>();
+        if (generador != null)
+        {
+            ID_CA = generador.ID_Casilla;
+        }
+
     }
 
     //codigo explosion
@@ -85,65 +91,40 @@ public class Explosive : MonoBehaviour
        
         var mousepos = GetMousePos();
         transform.position = mousepos - offset;
-        ID_CA = GameObject.Find("Generador").GetComponent<Generador>().ID_Casilla;
-
-
-
-        if (Input.GetMouseButtonDown(0))
+        if (generador != null)
         {
-
-
-
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(
-                Input.mousePosition
-            );
-
-            Collider2D[] hits = Physics2D.OverlapPointAll(mousePos);
-
-            if (hits.Length > 0)
-            {
-                Collider2D topObject = hits
-                    .OrderByDescending(hit =>
-                    {
-                        SpriteRenderer sr =
-                            hit.GetComponent<SpriteRenderer>();
-
-                        if (sr == null)
-                            sr = hit.GetComponentInParent<SpriteRenderer>();
-
-                        return sr != null ? sr.sortingOrder : 0;
-                    })
-                    .First();
-
-                Debug.Log("Objeto seleccionado: " +
-                          topObject.gameObject.name);
-            }
+            ID_CA = generador.ID_Casilla;
         }
+
 
 
 
     }
 
-    void OnMouseDown()
+    public void Agarrar()
     {
         //activation of item, also have to add this one life for when an explosion touches an explosive
         active = true;
 
 
         dragging = true;
-        spriteRenderer.sortingOrder = 1;
+       
         offset = GetMousePos() - (Vector2)transform.position;
     }
 
-    private void OnMouseUp()
+    public void Soltar()
     {
         dragging = false;
         if (Win)
         {
             Debug.Log("Ganaste");
-            GameObject.Find("Generador").GetComponent<Generador>().ganar_nivel = true;
+            if (generador != null)
+            {
+                generador.ganar_nivel = true;
+            }
+
         }
-       
+
     }
 
 
