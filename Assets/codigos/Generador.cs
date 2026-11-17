@@ -261,6 +261,8 @@ public class Generador : MonoBehaviour
 
     public void GenerarExplosivos()
     {
+       
+
         if ((nivel > 10) || true)
         {
             for (int i = 0; (i <= (nivel / 10) )|| (i < 2); i++)
@@ -271,8 +273,11 @@ public class Generador : MonoBehaviour
 
 
                 GameObject objeto = Instantiate(Bombas[RT], new Vector3(rx, ry, 0), Quaternion.identity);
-                
-                
+
+                maxSortingOrder++;
+                AsignarSortingOrder(objeto, maxSortingOrder);
+
+
                 objetos.Add(objeto);
             }
         }
@@ -280,8 +285,8 @@ public class Generador : MonoBehaviour
 
     public void GenerarObjetos()
     {
-        
 
+        maxSortingOrder = 0;
 
         for (int i = 0; i < 10 + nivel; i++)
         {
@@ -323,6 +328,10 @@ public class Generador : MonoBehaviour
 
             GameObject objeto = Instantiate(Tipo[RT], new Vector3(rx, ry, 0), Quaternion.identity);
 
+            maxSortingOrder++;
+            AsignarSortingOrder(objeto, maxSortingOrder);
+
+
             objetos.Add(objeto);
         }
 
@@ -333,6 +342,8 @@ public class Generador : MonoBehaviour
 
     public void Destruir() 
     {
+        objetoSeleccionadoActual = null;
+
         for (int i = objetos.Count - 1; i >= 0; i--)
         {
             if(objetos[i] != null)
