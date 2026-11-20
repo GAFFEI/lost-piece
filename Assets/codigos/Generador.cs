@@ -75,7 +75,7 @@ public class Generador : MonoBehaviour
 
             aud.PlayOneShot(Fit, 0.3f);
             
-            texto.text = "Puntaje: " + puntaje.ToString();
+            texto.text = "Puntaje:" + puntaje.ToString();
             Destruir();
             GenerarObjetos();
             
