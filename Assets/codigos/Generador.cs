@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UIElements;
 
 public class Generador : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class Generador : MonoBehaviour
 
     public List<GameObject> Bombas;
 
+    public List<GameObject> Relojes;
+    public Background background;
 
     public GameObject Casilla;
 
@@ -103,7 +106,8 @@ public class Generador : MonoBehaviour
             texto.text = "Puntaje:" + puntaje.ToString();
             Destruir();
             GenerarObjetos();
-            
+
+            background.BackgroundChange();
 
             nivel = nivel + 2;
             ganar_nivel=false;
@@ -256,7 +260,10 @@ public class Generador : MonoBehaviour
     }
 
 
-
+    public void AddTime()
+    {
+        T.AddTime();
+    }
 
 
     public void GenerarExplosivos()
@@ -283,6 +290,24 @@ public class Generador : MonoBehaviour
         }
     }
 
+    public void GenerarRelojes()
+    {
+        if ((nivel > 10) || true)
+        {
+            for (int i = 0; (i <= (nivel / 10)) || (i < 2); i++)
+            {
+                ry = Random.Range(range_spawn_y2, range_spawn_y);
+                rx = Random.Range(range_spawn_x2, range_spawn_x);
+                RT = Random.Range(0, 1);
+
+
+                GameObject objeto = Instantiate(Relojes[RT], new Vector3(rx, ry, 0), Quaternion.identity);
+
+
+                objetos.Add(objeto);
+            }
+        }
+    }
     public void GenerarObjetos()
     {
 
@@ -337,6 +362,7 @@ public class Generador : MonoBehaviour
 
         GenerarExplosivos();
 
+        GenerarRelojes();
     }
 
 
