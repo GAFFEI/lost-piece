@@ -27,7 +27,8 @@ public class Generador : MonoBehaviour
     public List<GameObject> Tipo_casilla;
 
     public List<GameObject> Bombas;
-
+    public List<GameObject> Relojes;
+    public Background background;
 
     public GameObject Casilla;
 
@@ -74,10 +75,11 @@ public class Generador : MonoBehaviour
 
             aud.PlayOneShot(Fit, 0.3f);
             
-            texto.text = "Puntaje:" + puntaje.ToString();
+            texto.text = "Puntaje: " + puntaje.ToString();
             Destruir();
             GenerarObjetos();
             
+            background.BackgroundChange();
 
             nivel = nivel + 2;
             ganar_nivel=false;
@@ -95,6 +97,11 @@ public class Generador : MonoBehaviour
 
     }
 
+    public void AddTime()
+    {
+        T.AddTime();
+    }
+
     public void GenerarExplosivos()
     {
         if ((nivel > 10) || true)
@@ -109,6 +116,25 @@ public class Generador : MonoBehaviour
                 GameObject objeto = Instantiate(Bombas[RT], new Vector3(rx, ry, 0), Quaternion.identity);
                 
                 
+                objetos.Add(objeto);
+            }
+        }
+    }
+
+    public void GenerarRelojes()
+    {
+        if((nivel > 10) || true)
+        {
+            for (int i = 0; (i <= (nivel / 10)) || (i < 2); i++)
+            {
+                ry = Random.Range(range_spawn_y2, range_spawn_y);
+                rx = Random.Range(range_spawn_x2, range_spawn_x);
+                RT = Random.Range(0, 1);
+
+
+                GameObject objeto = Instantiate(Relojes[RT], new Vector3(rx, ry, 0), Quaternion.identity);
+
+
                 objetos.Add(objeto);
             }
         }
@@ -164,6 +190,7 @@ public class Generador : MonoBehaviour
 
         GenerarExplosivos();
 
+        GenerarRelojes();
     }
 
 
