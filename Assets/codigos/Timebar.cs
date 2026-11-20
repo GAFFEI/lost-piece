@@ -14,6 +14,7 @@ public class Timebar : MonoBehaviour
     public bool restart = false;
     public bool End = false;
 
+    public int timeToAdd = 20;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,6 +44,17 @@ public class Timebar : MonoBehaviour
 
     }
 
+    public void AddTime()
+    {
+        if ((timeToAdd + tiempo) > maxtime)
+        {
+            tiempo = maxtime;
+        }
+        else
+        {
+            tiempo = tiempo + timeToAdd;
+        }
+    }
   
     public void restore()
     {
