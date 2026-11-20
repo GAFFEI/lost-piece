@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 
@@ -27,8 +28,7 @@ public class Generador : MonoBehaviour
     public List<GameObject> Tipo_casilla;
 
     public List<GameObject> Bombas;
-    public List<GameObject> Relojes;
-    public Background background;
+
 
     public GameObject Casilla;
 
@@ -47,9 +47,19 @@ public class Generador : MonoBehaviour
 
     public static int EScore;
 
+    // --- Control unificado de selección (Dragger o Explosive) ---
+    private GameObject objetoSeleccionadoActual;
+    private int maxSortingOrder = 0;
+    private Camera mainCamera;
+
+
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        mainCamera = Camera.main;
         GenerarObjetos();
         
         nivel = 0;
@@ -60,10 +70,25 @@ public class Generador : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetMouseButtonDown(0))
         {
-            Destruir();
+            IntentarSeleccionarObjetoSuperior();
         }
+
+        if (Input.GetMouseButtonUp(0) && objetoSeleccionadoActual != null)
+        {
+            if (objetoSeleccionadoActual.TryGetComponent(out Dragger dragger))
+            {
+                dragger.Soltar();
+            }
+            else if (objetoSeleccionadoActual.TryGetComponent(out Explosive explosive))
+            {
+                explosive.Soltar();
+            }
+
+            objetoSeleccionadoActual = null;
+        }
+
 
         if (ganar_nivel)
         {
@@ -79,7 +104,6 @@ public class Generador : MonoBehaviour
             Destruir();
             GenerarObjetos();
             
-            background.BackgroundChange();
 
             nivel = nivel + 2;
             ganar_nivel=false;
@@ -97,13 +121,148 @@ public class Generador : MonoBehaviour
 
     }
 
-    public void AddTime()
+
+    private void IntentarSeleccionarObjetoSuperior()
     {
-        T.AddTime();
+        Vector2 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D[] hits = Physics2D.OverlapPointAll(mousePos);
+
+        if (hits.Length == 0) return;
+
+        GameObject mejorObjeto = null;
+        int mayorLayer = int.MinValue;
+        int mayorOrder = int.MinValue;
+        float menorZ = float.MaxValue;
+
+        foreach (Collider2D hit in hits)
+        {
+            // Verificar si el collider pertenece a un Dragger o a un Explosive
+            Dragger dragger = hit.GetComponent<Dragger>();
+            if (dragger == null) dragger = hit.GetComponentInParent<Dragger>();
+
+            Explosive explosive = hit.GetComponent<Explosive>();
+            if (explosive == null) explosive = hit.GetComponentInParent<Explosive>();
+
+            // Determinar el GameObject raíz arrastrable (si no tiene ninguno, ignorar)
+            GameObject candidato = null;
+            if (dragger != null) candidato = dragger.gameObject;
+            else if (explosive != null) candidato = explosive.gameObject;
+
+            if (candidato == null) continue;
+
+            ObtenerInfoOrden(candidato, out int layerVal, out int orderVal);
+            float zPos = candidato.transform.position.z;
+
+            if (layerVal > mayorLayer ||
+               (layerVal == mayorLayer && orderVal > mayorOrder) ||
+               (layerVal == mayorLayer && orderVal == mayorOrder && zPos < menorZ))
+            {
+                mayorLayer = layerVal;
+                mayorOrder = orderVal;
+                menorZ = zPos;
+                mejorObjeto = candidato;
+            }
+        }
+
+        if (mejorObjeto != null)
+        {
+            objetoSeleccionadoActual = mejorObjeto;
+            TraerAlFrente(mejorObjeto);
+
+            if (mejorObjeto.TryGetComponent(out Dragger d))
+            {
+                d.Agarrar();
+            }
+            else if (mejorObjeto.TryGetComponent(out Explosive e))
+            {
+                e.Agarrar();
+            }
+        }
     }
+
+    private void TraerAlFrente(GameObject obj)
+    {
+        ObtenerInfoOrden(obj, out _, out int ordenActual);
+
+        if (ordenActual == maxSortingOrder && maxSortingOrder > 0) return;
+
+        maxSortingOrder++;
+
+        if (maxSortingOrder >= 32000)
+        {
+            ReordenarCapasLimpias();
+            maxSortingOrder++;
+        }
+
+        AsignarSortingOrder(obj, maxSortingOrder);
+    }
+
+    private void ObtenerInfoOrden(GameObject obj, out int layerValue, out int orderInLayer)
+    {
+        if (obj.TryGetComponent(out SortingGroup sg))
+        {
+            layerValue = SortingLayer.GetLayerValueFromID(sg.sortingLayerID);
+            orderInLayer = sg.sortingOrder;
+            return;
+        }
+
+        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+        if (sr == null) sr = obj.GetComponentInParent<SpriteRenderer>();
+
+        if (sr != null)
+        {
+            layerValue = SortingLayer.GetLayerValueFromID(sr.sortingLayerID);
+            orderInLayer = sr.sortingOrder;
+            return;
+        }
+
+        layerValue = 0;
+        orderInLayer = 0;
+    }
+
+    private void AsignarSortingOrder(GameObject obj, int nuevoOrden)
+    {
+        if (obj.TryGetComponent(out SortingGroup sg))
+        {
+            sg.sortingOrder = nuevoOrden;
+            return;
+        }
+
+        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+        if (sr == null) sr = obj.GetComponentInParent<SpriteRenderer>();
+
+        if (sr != null)
+        {
+            sr.sortingOrder = nuevoOrden;
+        }
+    }
+
+    private void ReordenarCapasLimpias()
+    {
+        objetos.RemoveAll(item => item == null);
+        objetos.Sort((a, b) =>
+        {
+            ObtenerInfoOrden(a, out _, out int ordenA);
+            ObtenerInfoOrden(b, out _, out int ordenB);
+            return ordenA.CompareTo(ordenB);
+        });
+
+        for (int i = 0; i < objetos.Count; i++)
+        {
+            AsignarSortingOrder(objetos[i], i + 1);
+        }
+
+        maxSortingOrder = objetos.Count;
+    }
+
+
+
+
 
     public void GenerarExplosivos()
     {
+       
+
         if ((nivel > 10) || true)
         {
             for (int i = 0; (i <= (nivel / 10) )|| (i < 2); i++)
@@ -114,25 +273,9 @@ public class Generador : MonoBehaviour
 
 
                 GameObject objeto = Instantiate(Bombas[RT], new Vector3(rx, ry, 0), Quaternion.identity);
-                
-                
-                objetos.Add(objeto);
-            }
-        }
-    }
 
-    public void GenerarRelojes()
-    {
-        if((nivel > 10) || true)
-        {
-            for (int i = 0; (i <= (nivel / 10)) || (i < 2); i++)
-            {
-                ry = Random.Range(range_spawn_y2, range_spawn_y);
-                rx = Random.Range(range_spawn_x2, range_spawn_x);
-                RT = Random.Range(0, 1);
-
-
-                GameObject objeto = Instantiate(Relojes[RT], new Vector3(rx, ry, 0), Quaternion.identity);
+                maxSortingOrder++;
+                AsignarSortingOrder(objeto, maxSortingOrder);
 
 
                 objetos.Add(objeto);
@@ -142,8 +285,8 @@ public class Generador : MonoBehaviour
 
     public void GenerarObjetos()
     {
-        
 
+        maxSortingOrder = 0;
 
         for (int i = 0; i < 10 + nivel; i++)
         {
@@ -185,17 +328,22 @@ public class Generador : MonoBehaviour
 
             GameObject objeto = Instantiate(Tipo[RT], new Vector3(rx, ry, 0), Quaternion.identity);
 
+            maxSortingOrder++;
+            AsignarSortingOrder(objeto, maxSortingOrder);
+
+
             objetos.Add(objeto);
         }
 
         GenerarExplosivos();
 
-        GenerarRelojes();
     }
 
 
     public void Destruir() 
     {
+        objetoSeleccionadoActual = null;
+
         for (int i = objetos.Count - 1; i >= 0; i--)
         {
             if(objetos[i] != null)
